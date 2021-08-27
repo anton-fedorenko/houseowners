@@ -1,0 +1,29 @@
+{% extends "../layout.njk" %}
+
+{% block header %}
+ Информация 
+{% endblock %}
+
+{% block content %}
+<dl class="uk-description-list">
+    <dt>Адрес</dt>
+    <dd>{{ data.house.address }}</dd>
+    <dt>Почтовый индекс</dt>
+    <dd>{{ data.house.postIndex }}</dd>
+    <dt>Район</dt>
+    <dd>{{ data.house.district }}</dd>
+    <dt>Микрорайон</dt>
+    <dd>{{ data.house.subDistrict }}</dd>
+    <dt>Год постройки</dt>
+    <dd>{{ data.house.constructionYear }}</dd>
+</dl>
+{% if data.house.links %}
+<h4>Ссылки</h4>
+<ul class="uk-list">
+    {% for link in data.house.links %}
+    <li><a href="{{ link.ref }}">{{ link.resource }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}

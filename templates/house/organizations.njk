@@ -1,0 +1,55 @@
+{% extends "../layout.njk" %}
+
+{% block header %}
+ Организации 
+{% endblock %}
+
+{% block content %}
+{% for organization in data.organizations %}
+<h2 class="uk-section uk-section-secondary uk-padding-small uk-padding-remove-vertical uk-margin-small uk-text-large">
+    {{ organization.name }}
+</h2>
+<div class="uk-child-width-1-2@s uk-child-width-expand@m uk-grid-match uk-text-center" uk-grid>
+    {% if organization.schedule %}
+    <div>
+        <div class="uk-card uk-card-small uk-card-default uk-card-body">
+            <div class="uk-card-title">Режим работы</div>
+            {% for scheduleItem in organization.schedule.workingHours %}
+            <div>{{ scheduleItem.days }}: {{ scheduleItem.time }}</div>
+            {% endfor %}
+            <div>Выходные: {{ organization.schedule.nonWorkingDays }}</div>
+        </div>
+    </div>
+    {% endif %}
+    {% if organization.address %}
+    <div>
+        <div class="uk-card uk-card-small uk-card-default uk-card-body">
+            <div class="uk-card-title">Адрес</div>
+            <div>{{ organization.address }}</div>
+        </div>
+    </div>
+    {% endif %}
+    {% for personItem in organization.persons %}
+    <div>
+        <div class="uk-card uk-card-small uk-card-default uk-card-hover uk-card-body">
+            <h3 class="uk-card-title">{{ personItem.position }}</h3>
+            <div>{{ personItem.person.givenName }}</div>
+            {% for phone in personItem.person.phones %}
+            <div>{{ phone }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    {% for phoneItem in organization.phones %}
+    <div>
+        <div class="uk-card uk-card-small uk-card-default uk-card-body">
+            <div class="uk-card-title">{{ phoneItem.label }}</div>
+            {% for phone in phoneItem.phones %}
+            <div>{{ phone }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+{% endblock %}
