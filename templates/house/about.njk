@@ -18,8 +18,8 @@
     <dd>{{ data.house.constructionYear }}</dd>
 </dl>
 {% if data.house.links %}
-<h4>Ссылки</h4>
-<ul class="uk-list">
+<h2 class="uk-h4 uk-margin-small uk-heading-bullet">Ссылки</h2>
+<ul class="uk-list uk-margin-small">
     {% for link in data.house.links %}
     <li><a href="{{ link.ref }}">{{ link.resource }}</li>
     {% endfor %}
