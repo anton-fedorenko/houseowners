@@ -19,7 +19,7 @@
     </div>
     <div>
         <div uk-grid class="uk-grid-divider uk-margin-top">
-            <div class="uk-width-1-3@s uk-width-1-5@m">
+            <div class="uk-width-1-4@s uk-width-1-5@m">
                 <ul class="uk-nav uk-nav-default">
                     {% for menuItem in context.menu %}
                     <li {% if menuItem.active %} class="uk-active" {% endif %}>
@@ -28,7 +28,7 @@
                     {% endfor %}
                 </ul>
             </div>
-            <div class="uk-width-2-3@s uk-width-4-5@m">
+            <div class="uk-width-3-4@s uk-width-4-5@m">
                 <h1 class="uk-h2 uk-margin-small-bottom uk-heading-divider">{% block header %}{% endblock %}</h1>
                 {% block content %}{% endblock %}
             </div>

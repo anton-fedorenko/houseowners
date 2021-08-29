@@ -9,7 +9,7 @@
 <h2 class="uk-section uk-section-secondary uk-padding-small uk-padding-remove-vertical uk-margin-small uk-text-large">
     {{ organization.name }}
 </h2>
-<div class="uk-child-width-1-2@s uk-child-width-expand@m uk-grid-match uk-text-center" uk-grid>
+<div class="uk-child-width-1-2@s uk-child-width-1-3@m uk-grid-match uk-text-center" uk-grid>
     {% if organization.schedule %}
     <div>
         <div class="uk-card uk-card-small uk-card-default uk-card-hover uk-card-body">
@@ -33,7 +33,8 @@
     <div>
         <div class="uk-card uk-card-small uk-card-default uk-card-hover uk-card-body">
             <div class="uk-card-title">{{ personItem.position }}</div>
-            <div>{{ personItem.person.givenName }}</div>
+            <div>{{ personItem.person.familyName }}</div>
+            <div>{{ personItem.person.givenName }} {{ personItem.person.patronymic }}</div>
             {% for phone in personItem.person.phones %}
             <div>{{ phone }}</div>
             {% endfor %}
