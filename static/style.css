@@ -1,0 +1,11 @@
+.uk-section-primary {
+    background: #1e7087;
+}
+
+.uk-section-secondary {
+    background: #f39501;
+}
+
+.uk-section-secondary:not(.uk-preserve-color) {
+    color: #FFF;
+}

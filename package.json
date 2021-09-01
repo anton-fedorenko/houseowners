@@ -4,6 +4,7 @@
     "fastify-cli": "^2.13.0",
     "fastify-mongodb": "^4.1.0",
     "fastify-plugin": "^3.0.0",
+    "fastify-static": "^4.2.3",
     "nunjucks": "^3.2.3",
     "point-of-view": "^4.15.1"
   },
