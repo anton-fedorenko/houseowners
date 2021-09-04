@@ -3,7 +3,7 @@ async function routes(fastify, options) {
 
     const pages = {
         feed: {
-            label: 'Обявления',
+            label: 'Новости',
             template: 'feed.njk',
         },
         organizations: {
@@ -20,6 +20,7 @@ async function routes(fastify, options) {
 
     fastify.get('/houses/:identifier', async (request, reply) => {
         const postsCollection = fastify.mongo.db.collection('posts')
+        const notificationsCollection = fastify.mongo.db.collection('notifications')
         const identifier = request.params.identifier
         const house = await housesCollection.findOne({ page: identifier })
         if (!house) {
@@ -27,8 +28,9 @@ async function routes(fastify, options) {
         }
         
         const houseId = house._id
-        const posts = await postsCollection.find({houseRef: houseId}).toArray()
-        return renderWithContext(reply, pages.feed, house, { posts: posts })
+        const posts = await postsCollection.find({houseRef: houseId}).sort({"created.time": -1}).limit(3).toArray()
+        const notifications = await notificationsCollection.find({houseRef: houseId, date: {$gt: "2021-09-05"}}).toArray()
+        return renderWithContext(reply, pages.feed, house, { posts: posts, notifications: notifications })
     })
 
     fastify.get('/houses/:identifier/about', async (request, reply) => {
@@ -79,6 +81,7 @@ async function routes(fastify, options) {
         })
         const context = {
             siteArea: house.name,
+            pageHeader: currentPage.label,
             menu: menu
         }
         return reply.view('/templates/house/' + currentPage.template, { context: context, data: data })

@@ -1,18 +1,33 @@
 {% extends "../layout.njk" %}
 
 {% block header %}
- Объявления 
+ {{ context.pageHeader }} 
 {% endblock %}
 
 {% block content %}
-<div class="uk-child-width-1-2@s uk-child-width-1-4@m uk-grid-match uk-text-center" uk-grid>
-    {% for post in data.posts %}
+{% if data.notifications %}
+<h2 class="uk-margin-small">Объявления</h2>
+<div class="uk-child-width-1-2@s uk-child-width-1-3@m uk-grid-match uk-text-center" uk-grid>
+    {% for notification in data.notifications %}
     <div>
         <div class="uk-card uk-card-small uk-card-default uk-card-body">
-            <div class="uk-card-title">{{ post.title }}</div>
-            <div>{{ post.text }}</div>
+            <div class="uk-card-title">{{ notification.title }}</div>
+            <div>{{ notification.date }}</div>
+            <div>{{ notification.time }}</div>
         </div>
     </div>
+    {% endfor %}
+</div>
+<hr>
+{% endif %}
+<div>
+    {% for post in data.posts %}
+    <article class="ho-article uk-margin-top">
+        <h2 class="ho-article-title">{{ post.title }}</h2>
+        <p class="uk-article-meta uk-text-right">Опубликовано {{ post.created.time.toISOString() }}</p>
+        <p>{{ post.text }}</p>
+        <hr>
+    </article>
     {% endfor %}
 </div>
 {% endblock %}
