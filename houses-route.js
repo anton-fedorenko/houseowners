@@ -22,16 +22,45 @@ async function routes(fastify, options) {
         const postsCollection = fastify.mongo.db.collection('posts')
         const notificationsCollection = fastify.mongo.db.collection('notifications')
         const identifier = request.params.identifier
+        const page = parseInt(request.query.page, 10) || 1
         const house = await housesCollection.findOne({ page: identifier })
         if (!house) {
             throw new Error('House not found: ' + identifier)
         }
         
         const houseId = house._id
-        const posts = await postsCollection.find({houseRef: houseId}).sort({"created.time": -1}).limit(3).toArray()
+        const pageLimit = 3;
+        const count = await postsCollection.count({houseRef: houseId})
+        const skip = (page - 1) * pageLimit
+        const posts = await postsCollection.find({houseRef: houseId})
+            .sort({"created.time": -1})
+            .skip(skip)
+            .limit(pageLimit)
+            .toArray()
+        const appPageRef = getPageRef(house, pages.feed)
+        const pagination = getPagination(appPageRef, page, count, pageLimit)
+        
         const notifications = await notificationsCollection.find({houseRef: houseId, date: {$gt: "2021-09-05"}}).toArray()
-        return renderWithContext(reply, pages.feed, house, { posts: posts, notifications: notifications })
+        
+        return renderWithContext(reply, pages.feed, house, 
+            { posts: posts, notifications: notifications, pagination: pagination })
     })
+
+    function getPagination(baseRef, page, count, pageLimit) {
+        const pagination = {
+            enabled: count > pageLimit,
+            currentPage: page
+        }
+        if (count > page * pageLimit) {
+            const nextPage = page + 1
+            pagination.nextRef = baseRef + `?page=` + nextPage
+        }
+        if (page > 1) {
+            const prevPage = page - 1
+            pagination.previousRef = baseRef + `?page=` + prevPage
+        }
+        return pagination
+    }
 
     fastify.get('/houses/:identifier/about', async (request, reply) => {
         const identifier = request.params.identifier
@@ -76,7 +105,7 @@ async function routes(fastify, options) {
             const pageItem = pages[pageKey]
             const segments = ['houses', house.page];
             if (pageItem.path) segments.push(pageItem.path)
-            const ref = '/' + segments.join('/')
+            const ref = getPageRef(house, pageItem)
             return {label: pageItem.label, ref: ref, active: pageItem === currentPage}
         })
         const context = {
@@ -85,6 +114,12 @@ async function routes(fastify, options) {
             menu: menu
         }
         return reply.view('/templates/house/' + currentPage.template, { context: context, data: data })
+    }
+
+    function getPageRef(house, page) {
+        const segments = ['houses', house.page]
+        if (page.path) segments.push(page.path)
+        return '/' + segments.join('/')
     }
 }
 

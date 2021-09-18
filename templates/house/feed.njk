@@ -30,4 +30,19 @@
     </article>
     {% endfor %}
 </div>
+{% if data.pagination.enabled %}
+<ul class="uk-pagination" uk-margin>
+    {% if data.pagination.previousRef %}
+    <li><a href="{{ data.pagination.previousRef }}"><span uk-pagination-previous></span></a></li>
+    {% else %}
+    <li class="uk-disabled"><span><span uk-pagination-previous></span></span></li>
+    {% endif %}
+    <li class="uk-active"><span>{{ data.pagination.currentPage }}</span></li>
+    {% if data.pagination.nextRef %}
+    <li><a href="{{ data.pagination.nextRef }}"><span uk-pagination-next></span></a></li>
+    {% else %}
+    <li class="uk-disabled"><span><span uk-pagination-next></span></span></li>
+    {% endif %}
+</ul>
+{% endif %}
 {% endblock %}
