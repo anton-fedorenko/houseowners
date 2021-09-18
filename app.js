@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = async function (fastify, opts) {
-    //fastify.register(require('./env-schema'))
+    fastify.register(require('./env-schema'))
     fastify.register(require('fastify-static'), {
         root: path.join(__dirname, 'static'),
         prefix: '/static/'
