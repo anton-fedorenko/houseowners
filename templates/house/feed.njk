@@ -24,8 +24,8 @@
     {% for post in data.posts %}
     <article class="ho-article uk-margin-top">
         <h2 class="ho-article-title">{{ post.title }}</h2>
-        <p class="uk-article-meta uk-text-right">Опубликовано {{ post.created.time.toISOString() }}</p>
         <p>{{ post.text }}</p>
+        <p class="uk-article-meta uk-text-right">Опубликовано {{ post.created.time | date('DD/MM/YYYY HH:mm') }}</p>
         <hr>
     </article>
     {% endfor %}
