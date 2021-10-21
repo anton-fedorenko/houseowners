@@ -8,7 +8,7 @@ export class PostsRepository {
     constructor(
         db: Db
     ) {
-        this.collection = db.collection('organizations');
+        this.collection = db.collection('posts');
     }
 
     async countHousePosts(houseId: ObjectId): Promise<number> {
